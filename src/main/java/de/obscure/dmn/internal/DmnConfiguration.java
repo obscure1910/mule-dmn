@@ -24,59 +24,50 @@ import java.util.UUID;
 @Operations(DmnOperations.class)
 public class DmnConfiguration implements Initialisable, Disposable {
 
-  private KieContainer kieContainer;
-  private StatelessKieSession kSession;
-  private DMNRuntime dmnRuntime;
-  private DMNModel dmnModel;
+    private KieContainer kieContainer;
+    private StatelessKieSession kSession;
+    private DMNRuntime dmnRuntime;
+    private DMNModel dmnModel;
 
-  @Parameter
-  private String namespace;
+    @Parameter
+    private String namespace;
 
-  @Parameter
-  private String modelName;
+    @Parameter
+    private String modelName;
 
+    public DMNModel getDmnModel() {
+        return dmnModel;
+    }
 
-  //ToDo implement outputparameterresolver
-  //@Parameter
-  //private String outputDecisionName;
+    public DMNRuntime getDmnRuntime() {
+        return dmnRuntime;
+    }
 
-  public DMNModel getDmnModel() {
-    return dmnModel;
-  }
+    @Override
+    public void initialise() {
+        KieServices ks = KieServices.Factory.get();
+        ReleaseId releaseId = ks.newReleaseId("de.obscure.dmn.internal", "DmnResourceLoader", UUID.randomUUID().toString());
+        KieFileSystem kfs = ks.newKieFileSystem();
 
-  public DMNRuntime getDmnRuntime() {
-    return dmnRuntime;
-  }
+        String dmnName = modelName + ".dmn";
+        InputStream inputsream = Thread.currentThread().getContextClassLoader().getResourceAsStream(dmnName);
+        Resource resource = ks.getResources().newInputStreamResource(inputsream)
+                .setSourcePath(dmnName)
+                .setResourceType(ResourceType.DMN);
 
-  @Override
-  public void initialise() {
-    KieServices ks = KieServices.Factory.get();
-    ReleaseId releaseId = ks.newReleaseId("de.obscure.dmn.internal", "DmnResourceLoader", UUID.randomUUID().toString());
-    KieFileSystem kfs = ks.newKieFileSystem();
+        kfs.write(resource);
+        kfs.generateAndWritePomXML(releaseId);
 
-    String dmnName = modelName + ".dmn";
-    InputStream inputsream = Thread.currentThread().getContextClassLoader().getResourceAsStream(dmnName);
-    Resource resource = ks.getResources().newInputStreamResource(inputsream)
-            .setSourcePath(dmnName)
-            .setResourceType(ResourceType.DMN);
+        ks.newKieBuilder(kfs).buildAll();
 
-    kfs.write(resource);
-    kfs.generateAndWritePomXML(releaseId);
+        this.kieContainer = ks.newKieContainer(releaseId);
+        this.kSession = kieContainer.newStatelessKieSession();
+        this.dmnRuntime = KieRuntimeFactory.of(kSession.getKieBase()).get(DMNRuntime.class);
+        this.dmnModel = dmnRuntime.getModel(namespace, modelName);
+    }
 
-    ks.newKieBuilder(kfs).buildAll();
-
-    this.kieContainer = ks.newKieContainer(releaseId);
-    this.kSession = kieContainer.newStatelessKieSession();
-    this.dmnRuntime = KieRuntimeFactory.of(kSession.getKieBase()).get(DMNRuntime.class);
-    this.dmnModel = dmnRuntime.getModel(namespace, modelName);
-  }
-
-//  public String getOutputDecisionName() {
-//    return outputDecisionName;
-//  }
-
-  @Override
-  public void dispose() {
-    this.kieContainer.dispose();
-  }
+    @Override
+    public void dispose() {
+        this.kieContainer.dispose();
+    }
 }
