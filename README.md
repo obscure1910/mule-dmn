@@ -6,7 +6,7 @@
 Add this dependency to your application pom.xml
 
     <dependency>
-        <groupId>de.obscure</groupId>
+        <groupId>io.github.obscure1910</groupId>
         <artifactId>mule-dmn</artifactId>
         <version>0.1.0</version>
         <classifier>mule-plugin</classifier>
