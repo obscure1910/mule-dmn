@@ -1,7 +1,6 @@
-package de.obscure.dmn.internal;
+package io.github.obscure1910.dmn.internal;
 
 import org.kie.dmn.api.core.DMNModel;
-import org.kie.dmn.api.core.DMNType;
 import org.kie.dmn.api.core.ast.InputDataNode;
 import org.mule.metadata.api.builder.BaseTypeBuilder;
 import org.mule.metadata.api.builder.ObjectTypeBuilder;

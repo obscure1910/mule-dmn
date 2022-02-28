@@ -1,4 +1,4 @@
-package de.obscure.dmn.internal;
+package io.github.obscure1910.dmn.internal;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.kie.dmn.api.core.*;

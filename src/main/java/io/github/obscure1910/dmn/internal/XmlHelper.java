@@ -1,4 +1,4 @@
-package de.obscure.dmn.internal;
+package io.github.obscure1910.dmn.internal;
 
 public class XmlHelper {
 
