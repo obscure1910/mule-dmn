@@ -1,6 +1,8 @@
 package io.github.obscure1910.dmn.internal;
 
 import org.kie.dmn.api.core.DMNModel;
+import org.kie.dmn.api.core.DMNType;
+import org.kie.dmn.api.core.DMNUnaryTest;
 import org.kie.dmn.api.core.ast.InputDataNode;
 import org.mule.metadata.api.builder.BaseTypeBuilder;
 import org.mule.metadata.api.builder.ObjectTypeBuilder;
@@ -10,6 +12,7 @@ import org.mule.runtime.api.metadata.resolving.InputTypeResolver;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.UnaryOperator;
 
 public class InputParameterResolver implements InputTypeResolver<String> {
 
@@ -25,8 +28,15 @@ public class InputParameterResolver implements InputTypeResolver<String> {
             Set<InputDataNode> inputs = dmnModel.getInputs();
 
             inputs.forEach(input -> {
-                //correspondent to ItemDefinition in the DMNModel table 49 in FEEL Spec
-                DmnTypeMapper.handleSimpleType(input, objectTypeBuilder, baseTypeBuilder);
+                DMNType dmnType = input.getType();
+                String inputName = input.getName();
+
+                if(isEnumType(dmnType)) {
+                    DmnTypeMapper.handleEnumType(dmnType.getBaseType(), dmnType.getAllowedValues(), inputName, objectTypeBuilder, baseTypeBuilder);
+                } else {
+                    DmnTypeMapper.handleSimpleType(dmnType, inputName, objectTypeBuilder, baseTypeBuilder);
+                }
+
             });
         }
 
@@ -36,6 +46,10 @@ public class InputParameterResolver implements InputTypeResolver<String> {
     @Override
     public String getCategoryName() {
         return "Input";
+    }
+
+    private boolean isEnumType(DMNType dmnType) {
+        return !dmnType.getAllowedValues().isEmpty();
     }
 
 }

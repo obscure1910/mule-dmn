@@ -6,7 +6,6 @@ import org.mule.runtime.extension.api.annotation.metadata.TypeResolver;
 import org.mule.runtime.extension.api.annotation.param.MediaType;
 import org.mule.runtime.extension.api.annotation.param.Config;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -23,7 +22,7 @@ public class DmnOperations {
 
     @MediaType(value = APPLICATION_XML, strict = false)
     public String executeDMN(@Config DmnConfiguration configuration,
-                             @TypeResolver(InputParameterResolver.class) Map<String, Object> input) throws IOException, ParserConfigurationException, XMLStreamException {
+                             @TypeResolver(InputParameterResolver.class) Map<String, Object> input) throws  XMLStreamException {
         DMNRuntime dmnRuntime = configuration.getDmnRuntime();
         DMNContext ctx = dmnRuntime.newContext();
         input.forEach(ctx::set);

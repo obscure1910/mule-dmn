@@ -1,11 +1,15 @@
 package io.github.obscure1910.dmn.internal;
 
 import org.kie.dmn.api.core.DMNType;
-import org.kie.dmn.api.core.ast.InputDataNode;
+import org.kie.dmn.api.core.DMNUnaryTest;
 import org.kie.dmn.feel.lang.SimpleType;
 import org.mule.metadata.api.builder.BaseTypeBuilder;
 import org.mule.metadata.api.builder.ObjectFieldTypeBuilder;
 import org.mule.metadata.api.builder.ObjectTypeBuilder;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 public class DmnTypeMapper {
 
@@ -13,15 +17,27 @@ public class DmnTypeMapper {
         //just static methods
     }
 
-    public static void handleSimpleType(InputDataNode input, ObjectTypeBuilder objectTypeBuilder, BaseTypeBuilder baseTypeBuilder) {
-        DMNType dmnType = input.getType();
-        ObjectFieldTypeBuilder objectFieldTypeBuilder = objectTypeBuilder.addField().key(input.getName());
+    public static void handleEnumType(DMNType dmnType, List<DMNUnaryTest> allowedValues, String inputName, ObjectTypeBuilder objectTypeBuilder, BaseTypeBuilder baseTypeBuilder) {
+        ObjectFieldTypeBuilder objectFieldTypeBuilder = objectTypeBuilder.addField().key(inputName);
 
-        addType(dmnType.getName(), objectFieldTypeBuilder, baseTypeBuilder);
+        switch (dmnType.getName()) {
+            case SimpleType.NUMBER:
+                Number[] numbers = allowedValues.stream().map(n -> new BigDecimal(n.toString())).toArray(Number[]::new);
+                objectFieldTypeBuilder.value(baseTypeBuilder.numberType().enumOf(numbers));
+                break;
+            case SimpleType.STRING:
+                String[] strings = allowedValues.stream().map(Object::toString).toArray(String[]::new);
+                objectFieldTypeBuilder.value(baseTypeBuilder.stringType().enumOf(strings));
+                break;
+            default:
+                objectFieldTypeBuilder.value(baseTypeBuilder.anyType());
+        }
     }
 
-    public static void addType(String typeName, ObjectFieldTypeBuilder objectFieldTypeBuilder, BaseTypeBuilder baseTypeBuilder) {
-        switch (typeName) {
+    //correspondent to ItemDefinition in the DMNModel table 49 in FEEL Spec
+    public static void handleSimpleType(DMNType dmnType, String inputName, ObjectTypeBuilder objectTypeBuilder, BaseTypeBuilder baseTypeBuilder) {
+        ObjectFieldTypeBuilder objectFieldTypeBuilder = objectTypeBuilder.addField().key(inputName);
+        switch (dmnType.getName()) {
             case SimpleType.NUMBER:
                 objectFieldTypeBuilder.value(baseTypeBuilder.numberType());
                 break;

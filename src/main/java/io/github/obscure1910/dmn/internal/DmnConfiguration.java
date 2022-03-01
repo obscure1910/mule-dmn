@@ -46,7 +46,7 @@ public class DmnConfiguration implements Initialisable, Disposable {
     @Override
     public void initialise() {
         KieServices ks = KieServices.Factory.get();
-        ReleaseId releaseId = ks.newReleaseId("de.obscure.dmn.internal", "DmnResourceLoader", UUID.randomUUID().toString());
+        ReleaseId releaseId = ks.newReleaseId("io.github.obscure1910.dmn.internal", "DmnResourceLoader", UUID.randomUUID().toString());
         KieFileSystem kfs = ks.newKieFileSystem();
 
         String dmnName = modelName + ".dmn";
