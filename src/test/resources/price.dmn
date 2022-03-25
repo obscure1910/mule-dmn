@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kiegroup.org/dmn/_FEB19CAC-D6B6-45F7-9DCF-E3678AA6217D" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_F47FA28D-DF1E-4332-BC28-5DA8CF73BBB3" name="price" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/_FEB19CAC-D6B6-45F7-9DCF-E3678AA6217D">
   <dmn:extensionElements/>
   <dmn:itemDefinition id="_46624F88-AF9D-445B-A723-BAD0262B051B" name="Insert a name" isCollection="false">
@@ -19,16 +20,16 @@
     <dmn:extensionElements/>
     <dmn:variable id="_4AF6A9F2-AA43-46BD-BA49-92545CC615A6" name="Season" typeRef="Season"/>
   </dmn:inputData>
-  <dmn:inputData id="_48CCE4CF-42A4-4EBC-B933-E7713C92D3BF" name="Number of Guests">
+  <dmn:inputData id="_48CCE4CF-42A4-4EBC-B933-E7713C92D3BF" name="Members">
     <dmn:extensionElements/>
-    <dmn:variable id="_FC04BC26-0810-44A9-B300-1708E0A780FA" name="Number of Guests" typeRef="number"/>
+    <dmn:variable id="_FC04BC26-0810-44A9-B300-1708E0A780FA" name="Members" typeRef="number"/>
   </dmn:inputData>
   <dmn:businessKnowledgeModel id="_58407262-EC37-4FA2-B251-7F080112D466" name="Price">
     <dmn:extensionElements/>
     <dmn:variable id="_C35AD35C-AD79-4813-B3BA-C06703E26C65" name="Price" typeRef="number"/>
     <dmn:encapsulatedLogic id="_E3D82FF2-70E4-4222-8713-61AD77CB84FC" kind="FEEL">
       <dmn:literalExpression id="_24A1AF18-5318-4AE5-A222-FDF254F9BB49">
-        <dmn:text>80</dmn:text>
+        <dmn:text>100</dmn:text>
       </dmn:literalExpression>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
@@ -41,13 +42,21 @@
     <dmn:informationRequirement id="_3DC07990-9856-4AFB-9915-72CF7683068C">
       <dmn:requiredInput href="#_48CCE4CF-42A4-4EBC-B933-E7713C92D3BF"/>
     </dmn:informationRequirement>
+    <dmn:informationRequirement id="_0DB81515-E3E3-480D-9990-ADE88F169519">
+      <dmn:requiredInput href="#_547CB64F-F4BB-4386-ABF7-5E79A687D87A"/>
+    </dmn:informationRequirement>
     <dmn:knowledgeRequirement id="_D9339780-66A2-4C06-BDD9-D16BF31B4CBA">
       <dmn:requiredKnowledge href="#_58407262-EC37-4FA2-B251-7F080112D466"/>
     </dmn:knowledgeRequirement>
     <dmn:decisionTable id="_D1547D18-DD4F-4EC6-BD1A-0A9D3040A93C" hitPolicy="FIRST" preferredOrientation="Rule-as-Row">
       <dmn:input id="_E02CDE94-4815-4D0D-A371-3072C29EF14A">
         <dmn:inputExpression id="_1E4A05B5-7F2A-492F-9DAA-215E4521DDE8" typeRef="number">
-          <dmn:text>Number of Guests</dmn:text>
+          <dmn:text>Members</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input id="_9A07738B-EB5B-4E09-A6C3-32C4CEE120F8">
+        <dmn:inputExpression id="_47734CE7-DFD3-4C62-AAAB-537731631B7B" typeRef="number">
+          <dmn:text>Size</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
       <dmn:input id="_991F3A7F-078D-4E2C-B3E3-214A853C921E">
@@ -61,11 +70,14 @@
         <dmn:inputEntry id="_98E3C4EA-A390-4A44-ADD6-23D224847AD1">
           <dmn:text>&lt;= 2</dmn:text>
         </dmn:inputEntry>
+        <dmn:inputEntry id="_D3593E7B-E3D5-4946-BF24-DD73EC549B7E">
+          <dmn:text>1</dmn:text>
+        </dmn:inputEntry>
         <dmn:inputEntry id="_24702FB2-2E1D-44DA-81F8-AEDF0E7EF21F">
           <dmn:text>["Spring", "Summer"]</dmn:text>
         </dmn:inputEntry>
         <dmn:outputEntry id="_7E4B7889-E6B0-4FD3-8C78-C55933074DB8">
-          <dmn:text>Number of Guests * Price()</dmn:text>
+          <dmn:text>Members * Price()</dmn:text>
         </dmn:outputEntry>
         <dmn:annotationEntry>
           <dmn:text/>
@@ -75,11 +87,14 @@
         <dmn:inputEntry id="_9B466995-9D41-4594-A510-4A6624D7A7FA">
           <dmn:text>&gt; 2</dmn:text>
         </dmn:inputEntry>
+        <dmn:inputEntry id="_39EC964F-57B5-46EE-82BC-C7651D5D0FE5">
+          <dmn:text>2</dmn:text>
+        </dmn:inputEntry>
         <dmn:inputEntry id="_8DF6C6AC-B1FE-428F-B741-75C927586D2A">
           <dmn:text>["Spring", "Summer"]</dmn:text>
         </dmn:inputEntry>
         <dmn:outputEntry id="_C1B211FE-90D5-4C31-B78E-E4D4BA3EB27F">
-          <dmn:text>Number of Guests * Price() * 0.9</dmn:text>
+          <dmn:text>Members * Price() * Size</dmn:text>
         </dmn:outputEntry>
         <dmn:annotationEntry>
           <dmn:text/>
@@ -89,11 +104,14 @@
         <dmn:inputEntry id="_67A51292-0238-444D-98C3-47B3CAA73C43">
           <dmn:text>&lt;= 2</dmn:text>
         </dmn:inputEntry>
+        <dmn:inputEntry id="_2EB9DFDE-13D7-467F-95B8-6ACFD3279447">
+          <dmn:text>3</dmn:text>
+        </dmn:inputEntry>
         <dmn:inputEntry id="_6FADA50F-B6B4-4CC5-BEC0-FE20BFEE027B">
           <dmn:text>["Fall", "Winter"]</dmn:text>
         </dmn:inputEntry>
         <dmn:outputEntry id="_523E2AA5-DB8B-4DC6-9F6F-F51C8DFB745B">
-          <dmn:text>Number of Guests * Price() * 0.9</dmn:text>
+          <dmn:text>Members * Price() * Size</dmn:text>
         </dmn:outputEntry>
         <dmn:annotationEntry>
           <dmn:text/>
@@ -103,11 +121,14 @@
         <dmn:inputEntry id="_82AFF5AB-82CC-406D-8197-BCF525777E69">
           <dmn:text>&gt; 2</dmn:text>
         </dmn:inputEntry>
+        <dmn:inputEntry id="_AF66873E-A682-4691-A1D7-269F9ED8AB47">
+          <dmn:text>4</dmn:text>
+        </dmn:inputEntry>
         <dmn:inputEntry id="_158713B9-7C99-48F3-8CE1-7F74B5E20488">
           <dmn:text>["Fall", "Winter"]</dmn:text>
         </dmn:inputEntry>
         <dmn:outputEntry id="_A14A2918-18F0-4176-8775-06F74DE447A1">
-          <dmn:text>Number of Guests * Price() * 0.8</dmn:text>
+          <dmn:text>Members * Price() * 100</dmn:text>
         </dmn:outputEntry>
         <dmn:annotationEntry>
           <dmn:text/>
@@ -115,6 +136,10 @@
       </dmn:rule>
     </dmn:decisionTable>
   </dmn:decision>
+  <dmn:inputData id="_547CB64F-F4BB-4386-ABF7-5E79A687D87A" name="Size">
+    <dmn:extensionElements/>
+    <dmn:variable id="_EE16551B-772A-4B71-9473-6FF9C86EF79B" name="Size"/>
+  </dmn:inputData>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_AAD3FE44-43EE-4341-B75F-08BA1FB42B10" name="DRG">
       <di:extension>
@@ -129,6 +154,7 @@
           <kie:ComponentWidths dmnElementRef="_D1547D18-DD4F-4EC6-BD1A-0A9D3040A93C">
             <kie:width>50</kie:width>
             <kie:width>153</kie:width>
+            <kie:width>100</kie:width>
             <kie:width>194</kie:width>
             <kie:width>362</kie:width>
             <kie:width>100</kie:width>
@@ -141,7 +167,7 @@
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="259.5981308411215" y="434" width="100" height="50"/>
+        <dc:Bounds x="334.5981308411215" y="191" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_48CCE4CF-42A4-4EBC-B933-E7713C92D3BF" dmnElementRef="_48CCE4CF-42A4-4EBC-B933-E7713C92D3BF" isCollapsed="false">
@@ -150,7 +176,7 @@
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="410.29906542056074" y="434" width="100" height="50"/>
+        <dc:Bounds x="335.29906542056074" y="359" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_58407262-EC37-4FA2-B251-7F080112D466" dmnElementRef="_58407262-EC37-4FA2-B251-7F080112D466" isCollapsed="false">
@@ -159,7 +185,7 @@
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="669" y="274" width="100" height="50"/>
+        <dc:Bounds x="476" y="275" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_A6686E82-A5F7-478C-A84B-537D85BE2292" dmnElementRef="_A6686E82-A5F7-478C-A84B-537D85BE2292" isCollapsed="false">
@@ -171,16 +197,29 @@
         <dc:Bounds x="336" y="275" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_547CB64F-F4BB-4386-ABF7-5E79A687D87A" dmnElementRef="_547CB64F-F4BB-4386-ABF7-5E79A687D87A" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="193.59813084112147" y="275.3421052631579" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_68ABDE59-E2A6-4DDA-9058-AEDE0F0E1C87" dmnElementRef="_68ABDE59-E2A6-4DDA-9058-AEDE0F0E1C87">
-        <di:waypoint x="309.5981308411215" y="459"/>
+        <di:waypoint x="384.5981308411215" y="216"/>
         <di:waypoint x="386" y="300"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_3DC07990-9856-4AFB-9915-72CF7683068C" dmnElementRef="_3DC07990-9856-4AFB-9915-72CF7683068C">
-        <di:waypoint x="460.29906542056074" y="459"/>
+        <di:waypoint x="385.29906542056074" y="384"/>
         <di:waypoint x="386" y="300"/>
       </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_0DB81515-E3E3-480D-9990-ADE88F169519-AUTO-TARGET" dmnElementRef="_0DB81515-E3E3-480D-9990-ADE88F169519">
+        <di:waypoint x="243.59813084112147" y="300.3421052631579"/>
+        <di:waypoint x="386" y="275"/>
+      </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_D9339780-66A2-4C06-BDD9-D16BF31B4CBA" dmnElementRef="_D9339780-66A2-4C06-BDD9-D16BF31B4CBA">
-        <di:waypoint x="719" y="299"/>
+        <di:waypoint x="526" y="300"/>
         <di:waypoint x="386" y="300"/>
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
